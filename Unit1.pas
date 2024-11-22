@@ -26,10 +26,10 @@ implementation
 
 function TMainForm.CalculateSphereVolume(radius: Double): Double;
 begin
-  if radius < 0 then
-    raise Exception.Create('Радиус не может быть отрицательным');
+  if radius <= 0 then
+  raise Exception.Create('Ошибка: Радиус должен быть положительным числом. Пожалуйста, введите значение больше нуля.');
 
-
+  
   Result := (4/3) * Pi * radius * radius * radius; 
 end;
 
