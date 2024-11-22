@@ -30,7 +30,7 @@ begin
     raise Exception.Create('Радиус не может быть отрицательным');
 
 
-  Result := (4/3) * Exp(Ln(radius) * 3); 
+  Result := (4/3) * Pi * radius * radius * radius; 
 end;
 
 procedure TMainForm.ButtonCalculateClick(Sender: TObject);
