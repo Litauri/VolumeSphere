@@ -4,20 +4,17 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Math;
+  Dialogs, StdCtrls;
 
 type
   TMainForm = class(TForm)
-    Label1: TLabel;
     EditRadius: TEdit;
     ButtonCalculate: TButton;
     LabelResult: TLabel;
     procedure ButtonCalculateClick(Sender: TObject);
   private
-    { Private declarations }
     function CalculateSphereVolume(radius: Double): Double;
   public
-    { Public declarations }
   end;
 
 var
@@ -27,28 +24,28 @@ implementation
 
 {$R *.dfm}
 
-{ TMainForm }
-
 function TMainForm.CalculateSphereVolume(radius: Double): Double;
 begin
-  // Объем шара V = (4/3) * ? * r?
-  Result := (4 / 3) * Pi * Exp(3 * Ln(radius));
+  if radius <= 0 then
+  raise Exception.Create('Ошибка: Радиус должен быть положительным числом. Пожалуйста, введите значение больше нуля.');
+
+
+  Result := (4/3) * Pi * radius * radius * radius; 
 end;
 
 procedure TMainForm.ButtonCalculateClick(Sender: TObject);
 var
-  radius, volume: Double;
+  radius: Double;
 begin
-  // Проверяем введен ли радиус и является ли он положительным
-  if TryStrToFloat(EditRadius.Text, radius) and (radius > 0) then
-  begin
-    volume := CalculateSphereVolume(radius);
-    LabelResult.Caption := 'Объем шара: ' + FloatToStr(volume);
-  end
-  else
-  begin
-    ShowMessage('Ошибка: радиус не введен или меньше нуля.');
-    LabelResult.Caption := ''; // очищаем результат
+  try
+    radius := StrToFloat(EditRadius.Text);
+    LabelResult.Caption := 'Объем шара: ' + FloatToStr(CalculateSphereVolume(radius));
+  except
+    on E: Exception do
+    begin
+      LabelResult.Caption := 'Ошибка: ' + E.Message;
+      EditRadius.Clear;
+    end;
   end;
 end;
 
